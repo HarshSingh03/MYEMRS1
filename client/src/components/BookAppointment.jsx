@@ -45,7 +45,7 @@ function BookAppointment() {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "http://localhost:5000/api/doctor/book-appointment",
+        "http://localhost:5000/api/user/book-appointment",
         {
           doctorId: params.doctorId,
           userId:user._id,

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const appointmentSchema = new Schema({
+const appointmentSchema = new mongoose.Schema({
   userId:{
     type:String, required:true
   },
