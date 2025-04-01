@@ -12,7 +12,7 @@ const doctorSchema = new mongoose.Schema({
     type:String, required:true
   },
   email:{
-    type:String, required:true
+    type:String, required:false
   },
   phoneNumber:{
     type:String, required:true,
@@ -34,13 +34,15 @@ const doctorSchema = new mongoose.Schema({
   },
   consultationHours:{
     type:Object,
-    required:true
+    required:false
   },
   timings:{
-    type:Array, required:true
+    type:Array, required:false
   },
   status:{
     type:String, default:'pending'
   }
+},{
+  timestamps:true
 });
 export default mongoose.model('doctors',doctorSchema);

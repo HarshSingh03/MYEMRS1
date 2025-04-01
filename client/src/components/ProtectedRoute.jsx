@@ -18,6 +18,7 @@ function ProtectedRoute(props) {
           Authorization:`Bearer ${localStorage.getItem('token')}`
         }
       });
+      // console.log(response)
       dispatch(hideLoading());
       if (response.data.success){
         dispatch(setUser(response.data.data));
@@ -37,7 +38,7 @@ function ProtectedRoute(props) {
     if(!user){
       getUser();
     }
-  },[])
+  },[user])
 
   if(localStorage.getItem('token'))
     return props.children

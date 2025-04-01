@@ -9,6 +9,11 @@ import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
 import ApplyDoctor from "./pages/ApplyDoctor.jsx";
+import Notifications from "./pages/Notifications.jsx";
+import UsersList from "./pages/Admin/UsersList.jsx";
+import DoctorsList from "./pages/Admin/DoctorsList.jsx";
+import Profile from "./pages/Doctor/Profile.jsx";
+import BookAppointment from "./components/BookAppointment.jsx";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -53,6 +58,45 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/userslist"
+          element={
+            <ProtectedRoute>
+              <UsersList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/doctorslist"
+          element={
+            <ProtectedRoute>
+              <DoctorsList/>
+            </ProtectedRoute>
+          }
+        />
+       <Route
+          path="/doctor/profile/:doctorId"
+          element={
+            <ProtectedRoute>
+              <Profile/>
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+        path = '/book-appointment/:doctorId'
+        element={
+          <ProtectedRoute>
+            <BookAppointment/>
+          </ProtectedRoute>
+        }/>
       </Routes>
       
     </BrowserRouter>

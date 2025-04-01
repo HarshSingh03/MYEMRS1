@@ -19,7 +19,6 @@ function Login() {
       dispatch(hideLoading());
       if (response.data.success) {
         toast.success(response.data.message);
-        toast("Redirecting to Home page");
         localStorage.setItem("token", response.data.data);
         navigate("/");
       } else {
@@ -41,6 +40,8 @@ function Login() {
           <Form.Item label="Password" name="password">
             <Input placeholder="Password" type="password" />
           </Form.Item>
+          <d className="flex justify-content-between">
+
           <Button type="primary" htmlType="submit" className="primary-button">
             Login
           </Button>
@@ -48,6 +49,7 @@ function Login() {
           <Link className="anchor my-2" to="/register">
             CLICK HERE TO REGISTER
           </Link>
+          </d>
         </Form>
       </div>
     </div>
