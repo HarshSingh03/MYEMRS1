@@ -13,7 +13,7 @@ import Notifications from "./pages/Notifications.jsx";
 import UsersList from "./pages/Admin/UsersList.jsx";
 import DoctorsList from "./pages/Admin/DoctorsList.jsx";
 import Profile from "./pages/Doctor/Profile.jsx";
-import BookAppointment from "./components/BookAppointment.jsx";
+import BookAppointment from "./pages/BookAppointment.jsx";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -78,27 +78,27 @@ function App() {
           path="/admin/doctorslist"
           element={
             <ProtectedRoute>
-              <DoctorsList/>
+              <DoctorsList />
             </ProtectedRoute>
           }
         />
-       <Route
+        <Route
           path="/doctor/profile/:doctorId"
           element={
             <ProtectedRoute>
-              <Profile/>
+              <Profile />
             </ProtectedRoute>
           }
         />
-        <Route 
-        path = '/book-appointment/:doctorId'
-        element={
-          <ProtectedRoute>
-            <BookAppointment/>
-          </ProtectedRoute>
-        }/>
+        <Route
+          path='/book-appointment/:doctorId'
+          element={
+            <ProtectedRoute>
+              <BookAppointment />
+            </ProtectedRoute>
+          } />
       </Routes>
-      
+
     </BrowserRouter>
   );
 }
