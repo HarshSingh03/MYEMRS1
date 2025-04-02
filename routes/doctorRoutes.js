@@ -1,6 +1,7 @@
 import express from 'express';
 import {authMiddleware} from '../middlewares/authMiddleware.js';
 import Doctor from '../models/doctorModel.js'
+import Appointment from '../models/appointmentModel.js';
 const router = express.Router();
 
 router.get('/get-doctor-info-by-user-id',authMiddleware,async (req,res)=>{
@@ -56,6 +57,22 @@ router.post('/update-doctor-profile',authMiddleware,async (req,res)=>{
       error:error.message
     })
     console.log(error)
+  }
+})
+
+
+router.get('/get-appointments-by-doctor-id',authMiddleware,async(req,res)=>{
+  try {
+    const doctor = await Doctor.findOne({userId: req.body.userId});
+    const appointments = await Appointment.find({doctorId:doctor._id});
+    return res.status(200).json({
+      success:true,
+      data:appointments,
+      message:'Appointments fetched successfully'
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({success:false, message:"Error fetching appointments", error})
   }
 })
 
