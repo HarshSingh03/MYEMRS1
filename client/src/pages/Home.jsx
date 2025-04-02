@@ -8,17 +8,18 @@ import { hideLoading, showLoading } from '../redux/alertsSlice.js';
 function Home() {
   const dispatch = useDispatch();
   const [doctors, setDoctors] = useState(null);
-  const getData =async () =>{
+  const getData = async () => {
     try {
       dispatch(showLoading())
-      const response = await axios.get('http://localhost:5000/api/user/get-all-approved-doctors',{
-        headers:{
-          Authorization:'Bearer ' + localStorage.getItem('token')
+      const response = await axios.get('http://localhost:5000/api/user/get-all-approved-doctors', {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
         }
       });
       dispatch(hideLoading())
       // console.log(response.data);
-      if (response.data.success){
+      if (response.data.success) {
+        console.log(response);
         setDoctors(response.data.data)
       }
     } catch (error) {
@@ -27,15 +28,15 @@ function Home() {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getData();
-  },[])
+  }, [])
   return (
     <Layout>
       <Row gutter={20} >
-        {doctors?.map((doctor)=>(
+        {doctors?.map((doctor) => (
           <Col span={8} xs={24} sm={24} lg={8}>
-            <Doctor doctor={doctor}/>
+            <Doctor doctor={doctor} />
           </Col>
         ))}
       </Row>

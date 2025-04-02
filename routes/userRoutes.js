@@ -3,9 +3,10 @@ import User from "../models/userModels.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-import Doctor from "../models/doctorModel.js";
+import Doctor from "../models/doctorModel.js"
 import { loginUser, registerUser } from "../controllers/userController.js";
 import Appointment from '../models/appointmentModel.js'
+import moment from 'moment'
 
 const router = express.Router();
 
@@ -114,35 +115,27 @@ router.delete("/delete-all-notifications", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/book-appointment", authMiddleware, async (req, res) => {
-  try {
-    const doctors = await Doctor.find({ status: "approved" });
-    return res.status(200).json({
-      success: true,
-      data: doctors,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Cannot fetch users",
-      error,
-    });
-  }
-});
 
-router.post("/update-doctor-profile", authMiddleware, async (req, res) => {
+
+router.post("/book-appointment", authMiddleware, async (req, res) => {
   try {
-    req.body.status= "pending"
+    req.body.status = "pending"
+    req.body.date = moment(req.body.date,"DD/MM-YYYY").toISOString();
+    req.body.time= moment(req.body.time, "HH:mm").toISOString();
     const newAppointment = await Appointment(req.body);
     await newAppointment.save();
-    const doctor = await Doctor.findOne({_id:req.body.doctorId});
-    doctor.unseenNotifications.push({
-      type:"new-appointment-request",
+    // pushing notifications to doctors on his userId
+    const user = await User.findOne({ _id: req.body.doctorInfo.userId });
+    user.unseenNotifications?.push({
+      type: "new-appointment-request",
       message: `A new appointment request has been made by ${req.body.userInfo.name}`,
-      onClickPath:'/doctor/appointments'
+      onClickPath: '/doctor/appointments'
     });
-    await doctor.save();
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "Appointment booked successfully",
+    })
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -154,18 +147,53 @@ router.post("/update-doctor-profile", authMiddleware, async (req, res) => {
 });
 
 
-
-router.get('/get-all-approved-doctors',authMiddleware,async(req,res)=>{
+router.post("/check-booking-availability", authMiddleware, async (req, res) => {
   try {
-    const doctors = await Doctor.find({staus:'approved'});
+    const date = moment(req.body.date, "DD/MM/YYYY").toISOString();
+    const fromTime = moment(req.body.time, "HH:mm").subtract(60, "minute").toISOString();
+    const toTime = moment(req.body.time, "HH:mm").add(60, "minute").toISOString();
+    const doctorId = req.body.doctorId;
+    const appointments = await Appointment.find({
+      doctorId,
+      date,
+      time: { $gte: fromTime, $lte: toTime },
+      // status:"approved"
+    });
+    if (appointments.length > 0) {
+      return res.status(200).json({
+        success: false,
+        message: "Appointments not available",
+      })
+    }
+    else {
+      return res.status(200).json({
+        success: true,
+        message: "Appointments available",
+      })
+    }
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error booking appointment",
+      error: error.message,
+    });
+    console.log(error);
+  }
+});
+
+
+router.get('/get-all-approved-doctors', authMiddleware, async (req, res) => {
+  try {
+    const doctors = await Doctor.find({ status: 'approved' });
     return res.status(200).json({
-      success:true,
-      data:doctors,
-      message:'Docgors status approved successfully'
+      success: true,
+      data: doctors,
+      message: 'Doctors status approved successfully'
     })
   } catch (error) {
     console.log(error);
-    return res.status(500).json({success:false, message:error.message, error})
+    return res.status(500).json({ success: false, message: error.message, error })
   }
 })
 export default router;

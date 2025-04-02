@@ -71,6 +71,36 @@ function BookAppointment() {
       dispatch(hideLoading());
     }
   }
+
+  const checkAvailability = async () => {
+    try {
+      dispatch(showLoading());
+      const response = await axios.post(
+        "http://localhost:5000/api/user/check-booking-availability",
+        {
+          doctorId: params.doctorId,
+          date:date,
+          time:time
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      // console.log(response)
+      dispatch(hideLoading());
+      if (response.data.success) {
+        toast.success(response.data.message)
+      }else{
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message)
+      dispatch(hideLoading());
+    }
+  }
   useEffect(() => {
     getDoctorData();
   }, []);
@@ -88,11 +118,11 @@ function BookAppointment() {
                 <b>Timings : </b> {doctor.timings[0]} - {doctor.timings[1]}
               </h1>
               <div className="d-flex flex-column ">
-                <DatePicker format="DD/MM/YYYY" onChange={(value)=>setDate(moment(value).format("DD-MM-YYYY"))} />
+                <DatePicker format="DD/MM/YYYY" onChange={(value)=>setDate(moment(value).format("DD/MM/YYYY"))} />
                 <TimePicker format="HH:mm" className="mt-3" onChange={(value)=>setTime(
                   moment(value).format("HH:mm")
                 )} />
-                <Button className="primary-button mt-2" >
+                <Button className="primary-button mt-2" onClick={checkAvailability} >
                   Check Availability
                 </Button>
                 <Button className="primary-button mt-2" onClick={bookNow} >
