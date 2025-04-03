@@ -63,7 +63,7 @@ function Appointments() {
       dataIndex:'createdAt',
       render: (text,record)=>
         <span>{
-          moment(record.date).format("DD/MM/YYYY")} {moment(record.time).format("HH:mm")}</span>
+          moment(record.date).format("DD-MM-YYYY")} {moment(record.time).format("HH:mm")}</span>
       
     },
     {

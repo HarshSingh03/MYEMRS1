@@ -71,7 +71,7 @@ label{
   height: 40px !important;
   width: 100% !important;
   color: white !important;
-  width:max-content !important;
+  /* width:max-content !important; */
 }
 
 p{
