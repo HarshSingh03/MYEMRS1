@@ -16,6 +16,7 @@ function ApplyDoctor() {
   const onFinish = async (values) => {
     try {
       dispatch(showLoading())
+      console.log(values.timings[0],values.timings[1],typeof values.timings[0])
       const response = await axios.post('http://localhost:5000/api/user/apply-doctor-account',{...values,userId:user._id,
               timings:[
                 moment(values.timings[0]).format("HH:mm"),

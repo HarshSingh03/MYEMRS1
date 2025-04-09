@@ -48,6 +48,7 @@
   height:85vh;
   width:100%;
   padding:15px;
+  overflow-x: scroll !important;
 }
 
 

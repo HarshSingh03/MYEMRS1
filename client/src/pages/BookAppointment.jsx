@@ -6,13 +6,14 @@ import { showLoading, hideLoading } from "../redux/alertsSlice.js";
 import toast from "react-hot-toast";
 import DoctorForm from "../components/DoctorForm.jsx";
 import moment from "moment";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { Button, DatePicker, Row, TimePicker, Col } from "antd";
 
 function BookAppointment() {
   // const [isAvailable, setIsAvailable] = useState(false);
   const [date, setDate] = useState();
-  const [time, setTime] = useState(null);
+  const [time, setTime] = useState();
+  const {navigate} = useNavigate();
   const [isAvailable, setIsAvailable] = useState(false);
   const params = useParams();
   const dispatch = useDispatch();
@@ -66,7 +67,10 @@ function BookAppointment() {
       // console.log(response)
       dispatch(hideLoading());
       if (response.data.success) {
+        setTime('');
+        setDate('');
         toast.success(response.data.message);
+        navigate("/appointments");
       }
     } catch (error) {
       console.log(error);
@@ -172,12 +176,12 @@ function BookAppointment() {
                     setTime(moment(value).format("HH:mm"));
                   }}
                 />
-                <Button
+                {!isAvailable && (<Button
                   className="primary-button mt-2"
                   onClick={checkAvailability}
                 >
                   Check Availability
-                </Button>
+                </Button>)}
                 {isAvailable && (
                   <Button
                     className="primary-button mt-2 "
