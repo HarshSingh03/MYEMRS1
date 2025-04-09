@@ -1,14 +1,13 @@
 import React from 'react'
 import {Form, Row, Col, Input, TimePicker, Button} from 'antd';
-import moment from 'moment';
 
 function DoctorForm({onFinish, initialValues}) {
   
   return (
       <Form layout="vertical" onFinish={onFinish} initialValues={{...initialValues, 
         ...(initialValues && {timings:[
-          moment(initialValues?.timings[0],"HH:mm"),
-          moment(initialValues?.timings[1],"HH:mm")
+          initialValues?.timings[0].format("HH:mm"),
+          initialValues?.timings[1].format("HH:mm")
         ]})
       }}> 
         <h1 className="card-title mt-3">Personal Information</h1>

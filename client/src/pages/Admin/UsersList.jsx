@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import {showLoading, hideLoading} from '../../redux/alertsSlice.js'
 import axios from 'axios';
 import { Table } from 'antd';
-import moment from 'moment';
 
 function UsersList() {
   const [users,setUsers] = useState([]);
@@ -43,7 +42,7 @@ function UsersList() {
     {
       title:'Created At',
       dataIndex:'createdAt',
-      render:(record)=>moment(record.createdAt).format("DD-MM-YYYY")
+      render:(record)=>record.createdAt.format("DD-MM-YYYY")
     },
     {
       title:'Actions',

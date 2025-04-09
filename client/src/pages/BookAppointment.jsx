@@ -5,7 +5,6 @@ import axios from "axios";
 import { showLoading, hideLoading } from "../redux/alertsSlice.js";
 import toast from "react-hot-toast";
 import DoctorForm from "../components/DoctorForm.jsx";
-import moment from "moment";
 import { useParams,useNavigate } from "react-router-dom";
 import { Button, DatePicker, Row, TimePicker, Col } from "antd";
 
@@ -160,7 +159,7 @@ function BookAppointment() {
                   format="DD-MM-YYYY"
                   onChange={(value) => {
                     setIsAvailable(false);
-                    setDate(moment(value).format("DD-MM-YYYY"));
+                    setDate(value.format("DD-MM-YYYY"));
                   }}
                 />
                 <TimePicker
@@ -168,12 +167,7 @@ function BookAppointment() {
                   className="mt-3"
                   onChange={(value) => {
                     setIsAvailable(false);
-                    console.log(
-                      value,
-                      moment(value),
-                      moment(value).format("HH:mm")
-                    );
-                    setTime(moment(value).format("HH:mm"));
+                    setTime(value.format("HH:mm"));
                   }}
                 />
                 {!isAvailable && (<Button

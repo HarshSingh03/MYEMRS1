@@ -6,8 +6,6 @@ import { Table } from "antd";
 import { showLoading, hideLoading } from "../../redux/alertsSlice.js";
 import toast from "react-hot-toast";
 // import { useNavigate } from "react-router-dom";
-import moment from "moment";
-
 function DoctorAppointments() {
   const dispatch = useDispatch();
   const [appointments, setAppointments] = useState(null);
@@ -84,8 +82,8 @@ function DoctorAppointments() {
       dataIndex: "createdAt",
       render: (text, record) => (
         <span>
-          {moment(record.date).format("DD-MM-YYYY")}{" "}
-          {moment(record.time).format("HH:mm")}
+          {record.date.format("DD-MM-YYYY")}{" "}
+          {record.time.format("HH:mm")}
         </span>
       ),
     },
